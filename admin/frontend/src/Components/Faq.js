@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import $ from 'jquery';
+import { Editor } from "react-draft-wysiwyg";
+import { EditorState } from 'draft-js';
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 
 var deep = 1
@@ -72,10 +75,33 @@ class FaqFolders extends Component {
 }
 
 
-function FaqEditor() {
-  return (
-    <div>FaqE</div>
-  )
+class FaqEditor extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      editorState: EditorState.createEmpty(),
+    };
+  }
+
+  onEditorStateChange = (editorState) => {
+    this.setState({
+      editorState,
+    });
+  };
+
+  render() {
+    const { editorState } = this.state;
+    return (
+      <div style={{ border: "1px solid #000", borderRadius: "5px", marginTop: "20px" }}>
+        <Editor
+          editorState={editorState}
+          wrapperClassName="demo-wrapper"
+          editorClassName="demo-editor"
+          onEditorStateChange={this.onEditorStateChange}
+        />
+      </div>
+    )
+  }
 }
 
 
