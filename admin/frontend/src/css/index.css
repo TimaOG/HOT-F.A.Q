@@ -206,3 +206,12 @@ textarea {
     flex-direction: column;
     gap: 30px;
 }
+
+.addButton {
+    appearance: none; 
+    border: 0; 
+    padding: 8px 16px;
+    color: #fff;
+    background-color: rgba(255, 0, 179, 0.825);
+    border-radius: 5px;
+}
