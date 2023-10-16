@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import $ from 'jquery';
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState } from 'draft-js';
+import { convertToRaw } from 'draft-js';
+import draftToHtml from 'draftjs-to-html';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
 
@@ -80,27 +82,76 @@ class FaqEditor extends Component {
     super(props);
     this.state = {
       editorState: EditorState.createEmpty(),
+      faqNumber: "faq0",
+      faqCount: 0,
+      faqData: [],
+      isEdit: [],
+      inputValue: "Название вопроса"
     };
+    this.addFaq = this.addFaq.bind(this)
+    this.handleInputChange = this.handleInputChange.bind(this);
+  }
+  handleInputChange(event) {
+    this.setState({ inputValue: event.target.value });
+  }
+  addFaq() {
+    const header = $('#faqInput').val()
+    const contentState = this.state.editorState.getCurrentContent();
+    const rawContent = convertToRaw(contentState);
+    const htmlContent = draftToHtml(rawContent);
+    this.state.faqData.push({ header: [header], data: htmlContent })
+    this.setState({ faqData: this.state.faqData, faqCount: this.state.faqCount + 1, faqNumber: "faq" + this.state.faqCount })
   }
 
   onEditorStateChange = (editorState) => {
     this.setState({
-      editorState,
+      editorState: editorState,
     });
   };
 
   render() {
-    const { editorState } = this.state;
-    return (
-      <div style={{ border: "1px solid #000", borderRadius: "5px", marginTop: "20px" }}>
-        <Editor
-          editorState={editorState}
-          wrapperClassName="demo-wrapper"
-          editorClassName="demo-editor"
-          onEditorStateChange={this.onEditorStateChange}
-        />
-      </div>
-    )
+    const editorState = this.state.editorState;
+    if (this.state.faqData.length === 0) {
+      return (
+        <div>
+          <div>
+            <input type='text' id="faqInput" style={{ marginTop: "20px" }} value={this.state.inputValue} onChange={this.handleInputChange}/>
+            <div style={{ border: "1px solid #000", borderRadius: "5px", marginTop: "20px" }}>
+              <Editor
+                editorState={editorState}
+                wrapperClassName="demo-wrapper"
+                editorClassName="demo-editor"
+                onEditorStateChange={this.onEditorStateChange}
+              />
+            </div>
+          </div>
+          <button className='addButton' style={{ marginTop: "20px" }} onClick={this.addFaq}>Добавить</button>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <div>
+            {this.state.faqData.map(data => (
+              <div id={this.state.faqNumber}>
+                <h2>{data.header}</h2>
+                <div dangerouslySetInnerHTML={{ __html: data.data }}/>
+              </div>
+            ))}
+            <input type='text' id="faqInput" style={{ marginTop: "20px" }} value="Название вопроса" />
+            <div style={{ border: "1px solid #000", borderRadius: "5px", marginTop: "20px" }}>
+              <Editor
+                editorState={editorState}
+                wrapperClassName="demo-wrapper"
+                editorClassName="demo-editor"
+                onEditorStateChange={this.onEditorStateChange}
+              />
+            </div>
+          </div>
+          <button className='addButton' style={{ marginTop: "20px" }} onClick={this.addFaq}>Добавить</button>
+        </div>
+      )
+    }
   }
 }
 
@@ -152,7 +203,7 @@ export default class Faq extends Component {
       return (
         <div>
           <h1>F.A.Q</h1>
-          <button className='addButton' style={{ marginTop: "20px" }} onClick={this.changeIsFolderMode}>Переключиться к иерархии папок</button>
+          <button className='addButton' style={{ marginTop: "20px", marginBottom: "20px" }} onClick={this.changeIsFolderMode}>Переключиться к иерархии папок</button>
           <FaqEditor />
         </div>
       )
