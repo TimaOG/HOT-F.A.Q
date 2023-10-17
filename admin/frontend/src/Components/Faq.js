@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import $ from 'jquery';
 import { Editor } from "react-draft-wysiwyg";
-import { EditorState } from 'draft-js';
+import { EditorState, ContentState } from 'draft-js';
 import { convertToRaw } from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
+import htmlToDraft from 'html-to-draftjs';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import pen from '../img/pencil.svg';
 
 
 var deep = 1
@@ -82,40 +84,79 @@ class FaqEditor extends Component {
     super(props);
     this.state = {
       editorState: EditorState.createEmpty(),
-      faqNumber: "faq0",
-      faqCount: 0,
+      editorEditState: EditorState.createEmpty(),
       faqData: [],
-      isEdit: [],
-      inputValue: "Название вопроса"
+      currentEditNumber: -1,
+      inputValue: "Название вопроса",
+      editInputValue: ""
     };
     this.addFaq = this.addFaq.bind(this)
+    this.editFaq = this.editFaq.bind(this)
+    this.delFaq = this.delFaq.bind(this)
+    this.doneEditFaq = this.doneEditFaq.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleInputEditChange = this.handleInputEditChange.bind(this)
+  }
+  handleInputEditChange(event) {
+    this.setState({ editInputValue: event.target.value });
   }
   handleInputChange(event) {
     this.setState({ inputValue: event.target.value });
   }
   addFaq() {
     const header = $('#faqInput').val()
+    console.log(header)
     const contentState = this.state.editorState.getCurrentContent();
     const rawContent = convertToRaw(contentState);
     const htmlContent = draftToHtml(rawContent);
     this.state.faqData.push({ header: [header], data: htmlContent })
-    this.setState({ faqData: this.state.faqData, faqCount: this.state.faqCount + 1, faqNumber: "faq" + this.state.faqCount })
+    this.setState({ faqData: this.state.faqData })
+    const html = '<p></p>';
+    const contentBlock = htmlToDraft(html);
+    const contentStateHtml = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+    const editorState = EditorState.createWithContent(contentStateHtml);
+    this.setState({ editorState: editorState, inputValue: "Название вопроса" })
   }
 
+  editFaq = (editIndex, data) => {
+    this.setState({ currentEditNumber: editIndex })
+    this.setState({ editInputValue: data.header[0] })
+    const html = data.data;
+    const contentBlock = htmlToDraft(html);
+    const contentStateHtml = ContentState.createFromBlockArray(contentBlock.contentBlocks);
+    const editorState = EditorState.createWithContent(contentStateHtml);
+    this.setState({ editorEditState: editorState })
+  }
+  doneEditFaq(index) {
+    const header = this.state.editInputValue
+    const contentState = this.state.editorEditState.getCurrentContent();
+    const rawContent = convertToRaw(contentState);
+    const htmlContent = draftToHtml(rawContent);
+    this.state.faqData[index] = { header: [header], data: htmlContent }
+    this.setState({ currentEditNumber: -1, faqData: this.state.faqData })
+  }
+  delFaq() {
+
+  }
   onEditorStateChange = (editorState) => {
     this.setState({
       editorState: editorState,
     });
   };
+  onEditorEditStateChange = (editorState) => {
+    this.setState({
+      editorEditState: editorState,
+    });
+  };
 
   render() {
     const editorState = this.state.editorState;
+    const editorEditState = this.state.editorEditState;
     if (this.state.faqData.length === 0) {
       return (
         <div>
           <div>
-            <input type='text' id="faqInput" style={{ marginTop: "20px" }} value={this.state.inputValue} onChange={this.handleInputChange}/>
+            <input className="inputStyle" type='text' id="faqInput" style={{ marginTop: "20px" }} value={this.state.inputValue} onChange={this.handleInputChange} />
             <div style={{ border: "1px solid #000", borderRadius: "5px", marginTop: "20px" }}>
               <Editor
                 editorState={editorState}
@@ -132,13 +173,36 @@ class FaqEditor extends Component {
       return (
         <div>
           <div>
-            {this.state.faqData.map(data => (
-              <div id={this.state.faqNumber}>
-                <h2>{data.header}</h2>
-                <div dangerouslySetInnerHTML={{ __html: data.data }}/>
+            {this.state.faqData.map((data, index) => (
+              <div>
+                {this.state.currentEditNumber == index ? (
+                  <div>
+                    <input className="inputStyle" type='text' style={{ marginTop: "20px" }} value={this.state.editInputValue} onChange={this.handleInputEditChange} />
+                    <button className='addButton' onClick={() => this.doneEditFaq(index)}>Сохранить</button>
+                    <div style={{ border: "1px solid #000", borderRadius: "5px", marginTop: "20px" }}>
+                      <Editor
+                        editorState={editorEditState}
+                        wrapperClassName="demo-wrapper"
+                        editorClassName="demo-editor"
+                        onEditorStateChange={this.onEditorEditStateChange}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <div onClick={() => this.editFaq(index, data)} className='faqBlock'>
+                      <div>
+                        <h2>{data.header}</h2>
+                        <img src={pen} />
+                      </div>
+                      <div dangerouslySetInnerHTML={{ __html: data.data }} style={{ border: "1px solid #000", borderRadius: "5px", marginTop: "20px" }} />
+                    </div>
+                    <hr />
+                  </div>
+                )}
               </div>
             ))}
-            <input type='text' id="faqInput" style={{ marginTop: "20px" }} value="Название вопроса" />
+            <input className="inputStyle" type='text' id="faqInput" style={{ marginTop: "20px" }} value={this.state.inputValue} onChange={this.handleInputChange} />
             <div style={{ border: "1px solid #000", borderRadius: "5px", marginTop: "20px" }}>
               <Editor
                 editorState={editorState}
