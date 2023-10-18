@@ -7,6 +7,7 @@ import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import pen from '../img/pencil.svg';
+import trash from '../img/trash.svg';
 
 
 var deep = 1
@@ -109,7 +110,7 @@ class FaqEditor extends Component {
     const contentState = this.state.editorState.getCurrentContent();
     const rawContent = convertToRaw(contentState);
     const htmlContent = draftToHtml(rawContent);
-    this.state.faqData.push({ header: [header], data: htmlContent })
+    this.state.faqData.push({ header: [header][0], data: htmlContent })
     this.setState({ faqData: this.state.faqData })
     const html = '<p></p>';
     const contentBlock = htmlToDraft(html);
@@ -120,7 +121,7 @@ class FaqEditor extends Component {
 
   editFaq = (editIndex, data) => {
     this.setState({ currentEditNumber: editIndex })
-    this.setState({ editInputValue: data.header[0] })
+    this.setState({ editInputValue: data.header })
     const html = data.data;
     const contentBlock = htmlToDraft(html);
     const contentStateHtml = ContentState.createFromBlockArray(contentBlock.contentBlocks);
@@ -132,11 +133,12 @@ class FaqEditor extends Component {
     const contentState = this.state.editorEditState.getCurrentContent();
     const rawContent = convertToRaw(contentState);
     const htmlContent = draftToHtml(rawContent);
-    this.state.faqData[index] = { header: [header], data: htmlContent }
+    this.state.faqData[index] = { header: [header][0], data: htmlContent }
     this.setState({ currentEditNumber: -1, faqData: this.state.faqData })
   }
-  delFaq() {
-
+  delFaq = (index) => {
+      this.state.faqData.splice(index, 1)
+      this.setState({ faqData: this.state.faqData })
   }
   onEditorStateChange = (editorState) => {
     this.setState({
@@ -190,10 +192,11 @@ class FaqEditor extends Component {
                   </div>
                 ) : (
                   <div>
-                    <div onClick={() => this.editFaq(index, data)} className='faqBlock'>
+                    <div className='faqBlock'>
                       <div>
-                        <h2>{data.header}</h2>
-                        <img src={pen} />
+                        <h2 style={{ display: "inline-block" }}>{data.header}</h2>
+                        <button className='addButton' onClick={() => this.editFaq(index, data)} style={{ marginLeft: '20px' }}><img style={{ display: "inline-block" }} src={pen} /></button>
+                        <button className='addButton' onClick={() => this.delFaq(index)} style={{ marginLeft: '10px' }}><img style={{ display: "inline-block" }} src={trash} /></button>
                       </div>
                       <div dangerouslySetInnerHTML={{ __html: data.data }} style={{ border: "1px solid #000", borderRadius: "5px", marginTop: "20px" }} />
                     </div>
