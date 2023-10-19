@@ -8,20 +8,36 @@ import htmlToDraft from 'html-to-draftjs';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import pen from '../img/pencil.svg';
 import trash from '../img/trash.svg';
-
+import search from '../img/search.svg';
+import cancelFilters from '../img/x-square.svg'
+import Modal from 'react-bootstrap/Modal';
 
 var deep = 1
 
 class FaqFolders extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isShowAdd: false,
+    };
+    this.hideAddButton = this.hideAddButton.bind(this)
+    this.showAddButton = this.showAddButton.bind(this)
+  }
+  showAddButton() {
+    this.setState({ isShowAdd: true });
+  }
+  hideAddButton() {
+    this.setState({ isShowAdd: false });
+  }
   render() {
     return (
       <div>
         <div style={{ marginTop: "40px" }}>
-          <button type="button" className="addButton" >Добавить папку</button>
+          <button type="button" className="addButton" onClick={this.showAddButton}>Добавить папку</button>
         </div>
-        <h5 style={{ marginTop: "40px" }}>Root</h5>
+        <h5 style={{ marginTop: "20px" }}>Root</h5>
         <div className="table-responsive">
-          <table className="table custom-table">
+          <table className="table">
             <thead>
               <tr>
                 <th scope="col">
@@ -53,6 +69,9 @@ class FaqFolders extends Component {
                 <th scope="col">
                   <p>Действия</p>
                   <div>
+                    <img style={{ display: "inline-block" }} src={search} />
+                    <img style={{ display: "inline-block", marginLeft: '20px' }} src={cancelFilters} />
+                    <img style={{ display: "inline-block", marginLeft: '20px' }} src={trash} />
                   </div>
                 </th>
               </tr>
@@ -70,10 +89,221 @@ class FaqFolders extends Component {
                 <td>0</td>
                 <td>-</td>
                 <td>1</td>
+                <td>
+                  <div>
+                    <img style={{ display: "inline-block" }} src={pen} />
+                    <img style={{ display: "inline-block", marginLeft: '20px' }} src={trash} />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <label className="control control--checkbox">
+                    <input type="checkbox" />
+                    <div className="control__indicator"></div>
+                  </label>
+                </th>
+                <td>1</td>
+                <td>Корневая</td>
+                <td>0</td>
+                <td>-</td>
+                <td>1</td>
+                <td>
+                  <div>
+                    <img style={{ display: "inline-block" }} src={pen} />
+                    <img style={{ display: "inline-block", marginLeft: '20px' }} src={trash} />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <label className="control control--checkbox">
+                    <input type="checkbox" />
+                    <div className="control__indicator"></div>
+                  </label>
+                </th>
+                <td>1</td>
+                <td>Корневая</td>
+                <td>0</td>
+                <td>-</td>
+                <td>1</td>
+                <td>
+                  <div>
+                    <img style={{ display: "inline-block" }} src={pen} />
+                    <img style={{ display: "inline-block", marginLeft: '20px' }} src={trash} />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <label className="control control--checkbox">
+                    <input type="checkbox" />
+                    <div className="control__indicator"></div>
+                  </label>
+                </th>
+                <td>1</td>
+                <td>Корневая</td>
+                <td>0</td>
+                <td>-</td>
+                <td>1</td>
+                <td>
+                  <div>
+                    <img style={{ display: "inline-block" }} src={pen} />
+                    <img style={{ display: "inline-block", marginLeft: '20px' }} src={trash} />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <label className="control control--checkbox">
+                    <input type="checkbox" />
+                    <div className="control__indicator"></div>
+                  </label>
+                </th>
+                <td>1</td>
+                <td>Корневая</td>
+                <td>0</td>
+                <td>-</td>
+                <td>1</td>
+                <td>
+                  <div>
+                    <img style={{ display: "inline-block" }} src={pen} />
+                    <img style={{ display: "inline-block", marginLeft: '20px' }} src={trash} />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <label className="control control--checkbox">
+                    <input type="checkbox" />
+                    <div className="control__indicator"></div>
+                  </label>
+                </th>
+                <td>1</td>
+                <td>Корневая</td>
+                <td>0</td>
+                <td>-</td>
+                <td>1</td>
+                <td>
+                  <div>
+                    <img style={{ display: "inline-block" }} src={pen} />
+                    <img style={{ display: "inline-block", marginLeft: '20px' }} src={trash} />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <label className="control control--checkbox">
+                    <input type="checkbox" />
+                    <div className="control__indicator"></div>
+                  </label>
+                </th>
+                <td>1</td>
+                <td>Корневая</td>
+                <td>0</td>
+                <td>-</td>
+                <td>1</td>
+                <td>
+                  <div>
+                    <img style={{ display: "inline-block" }} src={pen} />
+                    <img style={{ display: "inline-block", marginLeft: '20px' }} src={trash} />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <label className="control control--checkbox">
+                    <input type="checkbox" />
+                    <div className="control__indicator"></div>
+                  </label>
+                </th>
+                <td>1</td>
+                <td>Корневая</td>
+                <td>0</td>
+                <td>-</td>
+                <td>1</td>
+                <td>
+                  <div>
+                    <img style={{ display: "inline-block" }} src={pen} />
+                    <img style={{ display: "inline-block", marginLeft: '20px' }} src={trash} />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <label className="control control--checkbox">
+                    <input type="checkbox" />
+                    <div className="control__indicator"></div>
+                  </label>
+                </th>
+                <td>1</td>
+                <td>Корневая</td>
+                <td>0</td>
+                <td>-</td>
+                <td>1</td>
+                <td>
+                  <div>
+                    <img style={{ display: "inline-block" }} src={pen} />
+                    <img style={{ display: "inline-block", marginLeft: '20px' }} src={trash} />
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <label className="control control--checkbox">
+                    <input type="checkbox" />
+                    <div className="control__indicator"></div>
+                  </label>
+                </th>
+                <td>1</td>
+                <td>Корневая</td>
+                <td>0</td>
+                <td>-</td>
+                <td>1</td>
+                <td>
+                  <div>
+                    <img style={{ display: "inline-block" }} src={pen} />
+                    <img style={{ display: "inline-block", marginLeft: '20px' }} src={trash} />
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
+        <div style={{ textAlign: 'right' }}>
+          <p style={{ display: "inline", marginRight: '10px' }}>1</p>
+          <button type="button" className="tableButton" style={{ marginRight: '10px' }}>&lt;</button>
+          <input type="number" className="tableInput" style={{ marginRight: '10px' }} value={0} />
+          <button type="button" className="tableButton" style={{ marginRight: '10px' }}>&gt;</button>
+          <p style={{ display: "inline" }}>5</p>
+        </div>
+        <Modal
+          show={this.state.isShowAdd}
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title-vcenter">
+              Modal heading
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h4>Добавить папку</h4>
+            <div>
+              
+            </div>
+            <p>
+              Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+              dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+              consectetur ac, vestibulum at eros.
+            </p>
+          </Modal.Body>
+          <Modal.Footer>
+            <button className='addButton' onClick={this.hideAddButton}>Закрыть</button>
+            <button className='addButton' onClick={this.hideAddButton}>Сохранить</button>
+          </Modal.Footer>
+        </Modal>
       </div>
     )
   }
@@ -137,8 +367,8 @@ class FaqEditor extends Component {
     this.setState({ currentEditNumber: -1, faqData: this.state.faqData })
   }
   delFaq = (index) => {
-      this.state.faqData.splice(index, 1)
-      this.setState({ faqData: this.state.faqData })
+    this.state.faqData.splice(index, 1)
+    this.setState({ faqData: this.state.faqData })
   }
   onEditorStateChange = (editorState) => {
     this.setState({
@@ -261,7 +491,7 @@ export default class Faq extends Component {
     if (this.state.isFolder) {
       return (
         <div>
-          <h1>F.A.Q</h1>
+          <h1>F.A.Q.</h1>
           <button className='addButton' style={{ marginTop: "20px" }} onClick={this.changeIsFolderMode}>Редактировать вопросы в этой папке</button>
           <FaqFolders />
         </div>
@@ -269,7 +499,7 @@ export default class Faq extends Component {
     } else {
       return (
         <div>
-          <h1>F.A.Q</h1>
+          <h1>F.A.Q.</h1>
           <button className='addButton' style={{ marginTop: "20px", marginBottom: "20px" }} onClick={this.changeIsFolderMode}>Переключиться к иерархии папок</button>
           <FaqEditor />
         </div>

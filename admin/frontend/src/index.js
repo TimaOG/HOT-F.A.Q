@@ -1,7 +1,8 @@
 
 import './css/index.css';
 import './css/responsive.css';
-import './css/bootstrap.min.css';
+// import './css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import reportWebVitals from './reportWebVitals';
 import App from "./App";
 import React from "react";

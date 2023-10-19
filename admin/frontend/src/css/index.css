@@ -208,8 +208,8 @@ textarea {
 }
 
 .addButton {
-    appearance: none; 
-    border: 0; 
+    appearance: none;
+    border: 0;
     padding: 8px 16px;
     height: 40px;
     color: #fff;
@@ -234,4 +234,54 @@ textarea {
     border-radius: 5px;
     padding: 10px;
     border: 1px solid #dadada;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+
+.table {
+    width: 100%;
+    border: 1px solid #EEEEEE;
+    border-radius: 5px;
+}
+
+.table-responsive {
+    height: 520px !important;
+}
+
+.tableButton {
+    appearance: none;
+    border: 0;
+    padding: 10px 10px;
+    height: 40px;
+    color: #fff;
+    background-color: rgba(255, 0, 179, 0.825);
+    border-radius: 5px;
+}
+
+.tableInput {
+    appearance: none;
+    border: 0;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    height: 40px;
+    width: 50px;
+    border-radius: 5px;
+    border: 1px solid rgba(255, 0, 179, 0.825);
+}
+
+input.tableInput::-webkit-outer-spin-button,
+input.tableInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Для Firefox */
+input.tableInput[type=number] {
+  -moz-appearance: textfield;
 }
